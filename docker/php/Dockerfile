@@ -23,6 +23,9 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # Set working directory
 WORKDIR /var/www/html
 

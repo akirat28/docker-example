@@ -1,12 +1,12 @@
 # Docker PHP開発環境
 
 Nginx、PHP、MySQL、phpMyAdminを組み合わせたDockerベースのPHP開発環境です。
-大容量ファイルアップロード対応とXdebugによるデバッグ機能を備えています。
+Composer、大容量ファイルアップロード対応とXdebugによるデバッグ機能を備えています。
 
 ## 構成
 
 - **Nginx**: Webサーバー（ポート80）
-- **PHP 8.3-FPM**: Xdebug付きカスタムイメージ（デバッグポート9003）
+- **PHP 8.3-FPM**: Composer、Xdebug付きカスタムイメージ（デバッグポート9003）
 - **MySQL 8.0**: データベースサーバー（ポート3306）
 - **phpMyAdmin**: データベース管理ツール（ポート8080）
 
@@ -14,6 +14,7 @@ Nginx、PHP、MySQL、phpMyAdminを組み合わせたDockerベースのPHP開発
 
 - Docker
 - Docker Compose
+- Make（推奨）
 
 ## セットアップ
 
@@ -21,10 +22,22 @@ Nginx、PHP、MySQL、phpMyAdminを組み合わせたDockerベースのPHP開発
 
 ```bash
 git clone <このリポジトリのURL>
-cd docker-sample
+cd docker-example
 ```
 
 ### 2. 環境の起動
+
+#### Makeを使用（推奨）
+
+```bash
+# 初回起動（イメージビルドを含む）
+make build
+
+# 通常の起動
+make up
+```
+
+#### Docker Composeを直接使用
 
 ```bash
 # 初回起動（イメージビルドを含む）
@@ -42,6 +55,39 @@ docker-compose up -d
 ## 使い方
 
 ### 基本操作
+
+#### Make（推奨）
+
+```bash
+# 環境を起動
+make up
+
+# 環境を停止
+make down
+
+# 環境の状態確認
+make status
+
+# ログを確認
+make logs
+
+# 特定のサービスのログを確認
+make logs SERVICE=php
+
+# サービスを再起動
+make restart
+
+# PHPコンテナにログイン
+make shell
+
+# 環境をクリーンアップ
+make clean
+
+# ヘルプを表示
+make help
+```
+
+#### Docker Compose
 
 ```bash
 # 環境を起動
@@ -61,6 +107,30 @@ docker-compose logs phpmyadmin
 
 # サービスを再起動
 docker-compose restart php
+```
+
+### Composer
+
+PHPパッケージ管理ツールComposerが利用できます：
+
+```bash
+# Composerヘルプを表示
+make composer
+
+# composer.jsonを作成
+make composer CMD=init
+
+# パッケージをインストール
+make composer CMD=install
+
+# パッケージを追加
+make composer CMD="require monolog/monolog"
+
+# 開発用パッケージを追加
+make composer CMD="require --dev phpunit/phpunit"
+
+# オートローダーを更新
+make composer CMD="dump-autoload"
 ```
 
 ### PHPファイルの配置
@@ -132,27 +202,33 @@ IDEでXdebugを使用するための設定：
 ### カスタムPHP拡張機能
 
 以下の拡張機能がインストール済み：
-- GD (画像処理)
-- PDO (データベース接続)
-- PDO MySQL
-- MySQLi
-- Xdebug (デバッグ)
+- **Composer 2.8.10** (パッケージ管理)
+- **GD** (画像処理)
+- **PDO** (データベース接続)
+- **PDO MySQL**
+- **MySQLi**
+- **Xdebug** (デバッグ)
 
 ## ディレクトリ構造
 
 ```
-docker-sample/
+docker-example/
+├── docker/                        # Docker設定ファイル
+│   ├── nginx/
+│   │   └── nginx.conf            # Nginx設定
+│   ├── php/
+│   │   ├── Dockerfile           # PHPカスタムイメージ
+│   │   └── php.ini             # PHP設定
+│   ├── phpmyadmin/
+│   │   └── config.inc.php      # phpMyAdmin設定
+│   └── mysql/                   # MySQL設定（将来の拡張用）
+├── src/                          # PHPアプリケーションファイル
+│   └── index.php               # サンプルファイル
+├── db-data/                     # MySQLデータ永続化
 ├── docker-compose.yml          # Docker Compose設定
-├── nginx/
-│   └── nginx.conf             # Nginx設定
-├── php/
-│   ├── Dockerfile            # PHPカスタムイメージ
-│   └── php.ini              # PHP設定
-├── phpmyadmin/
-│   └── config.inc.php       # phpMyAdmin設定
-├── src/                     # PHPファイル配置ディレクトリ
-│   └── index.php           # サンプルファイル
-└── db-data/                # MySQLデータ永続化
+├── Makefile                   # 便利コマンド集
+├── README.md                 # このファイル
+└── CLAUDE.md                # Claude Code用プロジェクト説明
 ```
 
 ## トラブルシューティング
@@ -182,11 +258,31 @@ ports:
 
 1. PHP設定を確認：
    ```bash
+   make shell
+   php -m | grep xdebug
+   ```
+   
+   または
+   
+   ```bash
    docker-compose exec php php -m | grep xdebug
    ```
 
 2. IDE側でポート9003がリッスンされているか確認
 3. ファイアウォール設定を確認
+
+### Composerでエラーが発生する場合
+
+1. Composerバージョンを確認：
+   ```bash
+   make composer
+   ```
+
+2. PHPコンテナ内でComposerを直接実行：
+   ```bash
+   make shell
+   composer --version
+   ```
 
 ## データの永続化
 
