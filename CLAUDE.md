@@ -16,9 +16,12 @@ docker-example/
 │   │   └── config.inc.php
 │   └── mysql/
 ├── src/                    # PHPアプリケーションファイル
-├── db-data/                # MySQL永続データ
+├── db-data/                # MySQL永続データ（.gitignoreで除外）
 ├── docker-compose.yml      # Docker Compose設定
-└── Makefile               # 便利コマンド集
+├── Makefile               # 便利コマンド集
+├── .gitignore             # Git除外設定
+├── README.md              # プロジェクト説明
+└── CLAUDE.md              # Claude Code用プロジェクト説明
 ```
 
 ## アーキテクチャ概要
@@ -112,6 +115,22 @@ docker-compose restart [サービス名]
 - `docker/nginx/nginx.conf` → `/etc/nginx/nginx.conf` （Nginx設定）
 - `docker/php/php.ini` → `/usr/local/etc/php/conf.d/custom.ini` （PHP設定）
 - `docker/phpmyadmin/config.inc.php` → `/etc/phpmyadmin/config.inc.php` （phpMyAdmin設定）
+
+## Git設定
+
+### .gitignore
+重要なファイルがGitで管理されないよう、以下が`.gitignore`に設定済み：
+- `db-data/` - MySQLの永続データ
+- `.env*` - 環境変数ファイル
+- `.DS_Store` - macOSシステムファイル
+- `vendor/` - Composerの依存関係
+- `*.log` - ログファイル
+- IDEやエディタ設定ファイル
+
+### 注意事項
+- `src/`ディレクトリは.gitignoreで除外されているため、PHP開発ファイルのコミット時は注意
+- データベースデータ (`db-data/`) は自動的に除外される
+- 環境固有の設定は`.env`ファイルを使用し、`.env.example`をテンプレートとして提供
 
 ## デバッグ設定
 
