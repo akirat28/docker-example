@@ -1,0 +1,78 @@
+# Database data
+db-data/
+src/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.staging
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+*.tmp
+*.temp
+Desktop.ini
+
+# Linux
+*~
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vim/
+.nvimlog
+
+# Logs
+*.log
+logs/
+docker-compose.override.yml
+
+# Node.js (if using frontend tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# PHP
+vendor/
+composer.phar
+composer.lock
+.phpunit.result.cache
+*.cache
+
+# Temporary files
+tmp/
+temp/
+cache/
+
+# Docker specific
+.docker/
+docker-compose.override.yml
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Coverage reports
+coverage/
+coverage.xml
+clover.xml
+*.lcov
+
+# Local configuration overrides
+local.ini
+local.php
+local.json
