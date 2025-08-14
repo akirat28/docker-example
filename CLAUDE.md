@@ -69,6 +69,7 @@ docker-example/
 - **phpMyAdmin**: データベース管理インターフェース（ポート8080）
 - **MailHog**: メール送信テスト用SMTPサーバー（SMTP: 1025、WebUI: 8025）
 - **Redis 7**: 高速インメモリデータストア（ポート6379）
+- **Ngrok**: ローカル環境の外部公開トンネリングサービス（WebUI: 4040）
 
 すべてのサービスはDockerネットワーク `app-network` 経由で通信します。PHPファイルは `src/` ディレクトリに保存され、Nginxによって配信されます。
 
@@ -99,6 +100,10 @@ make mailhog         # MailHog WebUIのURL表示
 
 # Redis操作
 make redis           # Redisクライアントに接続
+
+# 外部公開
+make ngrok           # Ngrok URL表示（外部公開用）
+make ngrok-logs      # Ngrokのログを表示
 
 # その他
 make logs            # 全サービスのログ表示
@@ -146,6 +151,13 @@ docker-compose restart [サービス名]
 - **Redis**: localhost:6379
 - **PHP拡張機能**: redis拡張がインストール済み
 - **接続方法**: 新しいRedis('redis', 6379) または新しいRedis('localhost', 6379)
+
+### 外部公開（Ngrok）
+- **Ngrok WebUI**: http://localhost:4040
+- **外部URL**: `make ngrok` で確認
+- **設定**: `.env` ファイルで `NGROK_AUTHTOKEN` を設定（推奨）
+- **用途**: Webhookテスト、外部共有、モバイルテスト
+- **注意**: 開発・テスト用途のみで使用
 
 ## 設定詳細
 
