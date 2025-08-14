@@ -3,7 +3,6 @@ version: "3.8"
 services:
   nginx:
     image: nginx:alpine
-    container_name: nginx_server
     ports:
       - "80:80"
     volumes:
@@ -18,7 +17,6 @@ services:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
-    container_name: php_app
     volumes:
       - ./src:/var/www/html
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
@@ -31,7 +29,6 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: testdb
@@ -47,7 +44,6 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     platform: linux/amd64
-    container_name: phpmyadmin
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
@@ -63,9 +59,28 @@ services:
     networks:
       - app-network
 
+  mailhog:
+    image: mailhog/mailhog
+    platform: linux/amd64
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
 
 volumes:
   db-data:
+  redis-data:

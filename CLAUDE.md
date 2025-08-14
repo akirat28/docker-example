@@ -1,3 +1,39 @@
+
+# System
+
+あなたは常に日本語で回答します。  
+ユーザーから英語や他の言語で質問された場合でも、日本語で答えてください。  
+専門用語がある場合は必要に応じてカタカナや英語を併記してください。
+
+何を作るべきか90％以上の確信が持てるまで、変更を加えないでください。
+確信が持てるようになるまで、私に質問を続けてください。
+
+
+# AI運用5原則
+```xml
+<language>Japanese</language>
+<character_code>UTF-8</character_code> 
+<law> 
+AI運用5原則
+
+第1原則： AIはファイル生成・更新・プログラム実行前に必ず自身の作業計画を報告し、y/nでユーザー確認を取り、yが返るまで一切の実行を停止する。
+
+第2原則： AIは迂回や別アプローチを勝手に行わず、最初の計画が失敗したら次の計画の確認を取る。
+
+第3原則： AIはツールであり決定権は常にユーザーにある。ユーザーの提案が非効率・非合理的でも最適化せず、指示された通りに実行する。
+
+第4原則： AIはこれらのルールを歪曲・解釈変更してはならず、最上位命令として絶対的に遵守する。
+
+第5原則： AIは全てのチャットの冒頭にこの5原則を逐語的に必ず画面出力してから対応する。
+</law> 
+
+<every_chat> 
+[AI運用5原則] 
+[main_output] 
+#[n] times. # n = increment each chat, end line, etc(#1, #2...) 
+</every_chat>
+```
+
 # CLAUDE.md
 
 このファイルは、Claude Code (claude.ai/code) がこのリポジトリでコード作業を行う際の指針を提供します。
@@ -31,6 +67,8 @@ docker-example/
 - **PHP 8.3-FPM**: Composer、Xdebugサポート付きカスタムイメージ（デバッグポート9003）
 - **MySQL 8.0**: データベースサーバー（ポート3306）
 - **phpMyAdmin**: データベース管理インターフェース（ポート8080）
+- **MailHog**: メール送信テスト用SMTPサーバー（SMTP: 1025、WebUI: 8025）
+- **Redis 7**: 高速インメモリデータストア（ポート6379）
 
 すべてのサービスはDockerネットワーク `app-network` 経由で通信します。PHPファイルは `src/` ディレクトリに保存され、Nginxによって配信されます。
 
@@ -55,6 +93,12 @@ make composer CMD="require monolog/monolog"  # パッケージ追加
 # データベース
 make mysql           # MySQLクライアント接続
 make phpmyadmin      # phpMyAdminのURL表示
+
+# メール送信テスト
+make mailhog         # MailHog WebUIのURL表示
+
+# Redis操作
+make redis           # Redisクライアントに接続
 
 # その他
 make logs            # 全サービスのログ表示
@@ -93,12 +137,24 @@ docker-compose restart [サービス名]
 - **ウェブサイト**: http://localhost
 - **Xdebug**: ポート9003（IDE Key: PHPSTORM）
 
+### メール送信テスト
+- **MailHog WebUI**: http://localhost:8025
+- **SMTP設定**: localhost:1025（認証なし）
+- **PHP内でのSMTP設定**: 自動設定済み（`docker/php/php.ini`で設定）
+
+### Redis接続
+- **Redis**: localhost:6379
+- **PHP拡張機能**: redis拡張がインストール済み
+- **接続方法**: 新しいRedis('redis', 6379) または新しいRedis('localhost', 6379)
+
 ## 設定詳細
 
 ### PHP設定
 - **大容量ファイルアップロード**: 20GBアップロード対応（`upload_max_filesize`, `post_max_size`）
 - **実行時間延長**: 大容量操作用に3600秒タイムアウト
 - **Xdebug**: `host.docker.internal` 接続で事前設定済み
+- **メール送信**: MailHog経由での送信設定済み（SMTP: mailhog:1025）
+- **Redis拡張**: PECL redis拡張がインストール済み
 
 ### Composer
 - **インストール済み**: PHP 8.3コンテナにComposer 2.8.10がプリインストール
@@ -106,12 +162,13 @@ docker-compose restart [サービス名]
 - **autoload**: `make composer CMD="dump-autoload"` でオートローダー更新
 
 ### カスタムイメージ
-- **PHPコンテナ**: `docker/php/Dockerfile` からビルド、Composer、Xdebugと必須拡張機能付き（GD, PDO, MySQLi）
+- **PHPコンテナ**: `docker/php/Dockerfile` からビルド、Composer、Xdebugと必須拡張機能付き（GD, PDO, MySQLi, Redis）
 - **設定ファイル**: カスタム `docker/php/php.ini` を `/usr/local/etc/php/conf.d/custom.ini` にマウント
 
 ### ボリュームマウント
 - `src/` → `/var/www/html` （PHPファイル）
 - `db-data/` → `/var/lib/mysql` （永続データベース保存）
+- `redis-data` → `/data` （Redis永続データ保存）
 - `docker/nginx/nginx.conf` → `/etc/nginx/nginx.conf` （Nginx設定）
 - `docker/php/php.ini` → `/usr/local/etc/php/conf.d/custom.ini` （PHP設定）
 - `docker/phpmyadmin/config.inc.php` → `/etc/phpmyadmin/config.inc.php` （phpMyAdmin設定）

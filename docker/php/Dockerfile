@@ -19,9 +19,9 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
         pdo_mysql \
         mysqli
 
-# Install Xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+# Install Xdebug and Redis
+RUN pecl install xdebug redis \
+    && docker-php-ext-enable xdebug redis
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

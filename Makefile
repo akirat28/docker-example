@@ -1,6 +1,6 @@
 # Docker開発環境用Makefile
 
-.PHONY: help up down build rebuild restart status logs shell composer mysql phpmyadmin clean
+.PHONY: help up down build rebuild restart status logs shell composer mysql phpmyadmin mailhog redis clean
 
 # デフォルトコマンド - ヘルプを表示
 help:
@@ -16,6 +16,8 @@ help:
 	@echo "  make composer  - Composerコマンドを実行 (例: make composer CMD=install)"
 	@echo "  make mysql     - MySQLクライアントに接続"
 	@echo "  make phpmyadmin - phpMyAdminのURLを表示"
+	@echo "  make mailhog   - MailHogのURLを表示"
+	@echo "  make redis     - Redisクライアントに接続"
 	@echo "  make clean     - 停止してボリュームとイメージを削除"
 
 # サービス起動
@@ -76,6 +78,18 @@ phpmyadmin:
 	@echo "ユーザー: testuser"
 	@echo "パスワード: testpassword"
 
+# MailHogのURL表示
+mailhog:
+	@echo "MailHog WebUIはこちら: http://localhost:8025"
+	@echo "SMTP設定:"
+	@echo "  ホスト: mailhog (Docker内) / localhost (ホストから)"
+	@echo "  ポート: 1025"
+	@echo "  認証: なし"
+
+# Redisクライアント接続
+redis:
+	docker-compose exec redis redis-cli
+
 # 環境をクリーンアップ
 clean:
 	docker-compose down -v
@@ -87,9 +101,12 @@ info:
 	@echo "=== Docker開発環境情報 ==="
 	@echo "ウェブサイト: http://localhost"
 	@echo "phpMyAdmin: http://localhost:8080"
+	@echo "MailHog WebUI: http://localhost:8025"
 	@echo "MySQL接続: localhost:3306"
 	@echo "  データベース: testdb"
 	@echo "  ユーザー: testuser"
 	@echo "  パスワード: testpassword"
+	@echo "Redis接続: localhost:6379"
+	@echo "SMTP設定 (MailHog): localhost:1025"
 	@echo "Xdebugポート: 9003"
 	@echo "=========================="
