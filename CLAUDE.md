@@ -52,9 +52,14 @@ docker-example/
 │   │   └── config.inc.php
 │   └── mysql/
 ├── src/                    # PHPアプリケーションファイル
-├── db-data/                # MySQL永続データ（.gitignoreで除外）
+├── data/                   # 永続化データ（.gitignoreで除外）
+│   ├── mysql/              # MySQL永続データ
+│   ├── redis/              # Redis永続データ
+│   └── minio/              # MinIO永続データ
 ├── docker-compose.yml      # Docker Compose設定
 ├── Makefile               # 便利コマンド集
+├── .env                   # 環境変数設定
+├── .env.example           # 環境変数設定例
 ├── .gitignore             # Git除外設定
 ├── README.md              # プロジェクト説明
 └── CLAUDE.md              # Claude Code用プロジェクト説明
@@ -69,9 +74,10 @@ docker-example/
 - **phpMyAdmin**: データベース管理インターフェース（ポート8080）
 - **MailHog**: メール送信テスト用SMTPサーバー（SMTP: 1025、WebUI: 8025）
 - **Redis 7**: 高速インメモリデータストア（ポート6379）
+- **MinIO**: S3互換オブジェクトストレージサーバー（API: 9000、Console: 9001）
 - **Ngrok**: ローカル環境の外部公開トンネリングサービス（WebUI: 4040）
 
-すべてのサービスはDockerネットワーク `app-network` 経由で通信します。PHPファイルは `src/` ディレクトリに保存され、Nginxによって配信されます。
+すべてのサービスはDockerネットワーク `app-network` 経由で通信します。PHPファイルは `src/` ディレクトリに保存され、永続化データは `data/` ディレクトリに保存されます。
 
 ## よく使用するコマンド
 
