@@ -190,6 +190,11 @@ info:
 
 # Ngrok URL表示
 ngrok:
+	@echo "=== Ngrok 設定方法 ==="
+	@echo "1. https://ngrok.com/でアカウント作成"
+	@echo "2. 認証トークンを取得"
+	@echo "3. .env ファイルに NGROK_AUTHTOKEN=your_token_here を追加"
+	@echo ""
 	@echo "=== Ngrok トンネル情報 ==="
 	@echo "Ngrok WebUI: http://localhost:4040"
 	@echo ""
