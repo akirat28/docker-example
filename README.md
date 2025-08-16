@@ -299,6 +299,11 @@ ports:
   sudo rm -rf db-data/
   ```
 
+## Laravel のインストール方法
+
+$ make shell
+$ composer create-project laravel/laravel laravel
+
 ## デバッグ方法(Launch.json)
 
 ```
@@ -317,7 +322,7 @@ ports:
       "stopOnEntry": false, // ここをのtrueにするとソースの先頭で止まるようになります
       "pathMappings": {
         //"/var/www/html/laravel": "${workspaceFolder}/src"
-        "/var/www/html/laravel": "${workspaceFolder}/src/laravel"
+        "/app/laravel": "${workspaceFolder}/src/laravel"
       },
       "ignore": ["**/vendor/**/*.php"]
     }

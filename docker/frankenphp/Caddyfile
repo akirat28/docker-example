@@ -1,0 +1,25 @@
+{
+    # FrankenPHP設定を有効化
+    frankenphp
+    
+    # ディレクティブの順序を設定
+    order php_server before file_server
+}
+
+# HTTPサーバー設定
+:80 {
+    # ドキュメントルート（Laravel public）
+    root * /app/laravel/public
+    
+    # PHPファイルの処理
+    php_server
+    
+    # 静的ファイルの配信
+    file_server
+    
+    # ログ設定
+    log {
+        output stdout
+        format json
+    }
+}
