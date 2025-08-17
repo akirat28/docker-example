@@ -177,7 +177,7 @@ test:
 # 開発環境の詳細情報表示
 info:
 	@echo "=== Docker開発環境情報 ==="
-	@echo "ウェブサイト: http://localhost:$${NGINX_PORT:-80} (FrankenPHP)"
+	@echo "ウェブサイト: http://localhost:$${FRANKEN_PHP_PORT:-80} (FrankenPHP)"
 	@echo ""
 	@echo "データベース管理:"
 	@echo "  phpMyAdmin: http://localhost:$${PHPMYADMIN_PORT:-8080}"
@@ -278,7 +278,7 @@ profiles-help:
 	@echo "3. 設定後、make down && make up で変更を適用"
 	@echo ""
 	@echo "4. ポート設定も.envファイルで変更可能："
-	@echo "   NGINX_PORT=8080"
+	@echo "   FRANKEN_PHP_PORT=8080"
 	@echo "   MYSQL_PORT=3307"
 	@echo "   など"
 

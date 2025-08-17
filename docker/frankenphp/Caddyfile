@@ -9,7 +9,7 @@
 # HTTPサーバー設定
 :80 {
     # ドキュメントルート（Laravel public）
-    root * /app/laravel/public
+    root * /app
     
     # PHPファイルの処理
     php_server

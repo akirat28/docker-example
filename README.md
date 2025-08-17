@@ -321,8 +321,8 @@ $ composer create-project laravel/laravel laravel
       "hostname": "0.0.0.0",
       "stopOnEntry": false, // ここをのtrueにするとソースの先頭で止まるようになります
       "pathMappings": {
-        //"/var/www/html/laravel": "${workspaceFolder}/src"
-        "/app/laravel": "${workspaceFolder}/src/laravel"
+        //"/app/laravel": "${workspaceFolder}/src/laravel"
+        "/app": "${workspaceFolder}/src"
       },
       "ignore": ["**/vendor/**/*.php"]
     }

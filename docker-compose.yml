@@ -13,11 +13,11 @@ services:
       dockerfile: Dockerfile
     container_name: "${PROJECT_NAME:-docker-example}_php"
     ports:
-      - "${NGINX_PORT:-80}:80"
+      - "${FRANKEN_PHP_PORT:-80}:80"
     profiles:
       - php
     volumes:
-      - ./src/laravel:/app/laravel
+      - ./src:/app
       - ./docker/frankenphp/php.ini:/usr/local/etc/php/conf.d/custom.ini
       - ./docker/frankenphp/Caddyfile:/etc/caddy/Caddyfile
     networks:
