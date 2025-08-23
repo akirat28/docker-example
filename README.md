@@ -330,6 +330,32 @@ $ composer create-project laravel/laravel laravel
 }
 ```
 
+## デバッグ方法 2(vim vdebug)
+
+make shell でターミナルを起動します。
+VIM の xdebug 機能を使います。
+
+```
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
+
+docker/frankenphp/.tmux.conf
+docker/frankenphp/.vimrc
+をルートにコピーします。
+
+コピーが完了したら vim を起動して
+:PlugInstall
+を実行します。
+
+F5・・Start
+F6・・Stop
+F2・・Step Over
+F3・・Step In
+F4・・Step Out
+F9・・Run To Cursor
+F10・・Toggle Break Point
+
 ## ライセンス
 
 このプロジェクトは MIT ライセンスの下で提供されています。
