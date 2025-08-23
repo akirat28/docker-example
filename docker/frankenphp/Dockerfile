@@ -11,6 +11,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
+    python3 \
+    vim \
+    tmux \
+    vim-nox \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
